@@ -1,0 +1,14 @@
+version: "3.3"
+
+services:
+  server:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - ../:/usr/src/app
+    container_name: sgi-frontend
+    working_dir: /usr/src/app
+    image: sgi-frontend
+    ports:
+      - "3000:3000"

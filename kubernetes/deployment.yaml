@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: sgi-frontend
+    version: v3
+  name: sgi-frontend
+  namespace: sgi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sgi-frontend
+      version: v3
+  template:
+    metadata:
+      labels:
+        app: sgi-frontend
+        version: v3
+    spec:
+      containers:
+      - command:
+        - yarn
+        - start
+        image: gcr.io/guarida-imoveis/sgi:3.0
+        imagePullPolicy: IfNotPresent
+        name: sgi-frontend
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /api/v3/health-check
+            port: 3000
+        readinessProbe:
+          httpGet:
+            path: /api/v3/health-check
+            port: 3000
+      imagePullSecrets:
+      - name: gcr-json-key
